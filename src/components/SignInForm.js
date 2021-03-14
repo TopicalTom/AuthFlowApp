@@ -15,9 +15,8 @@ const SignInForm = () => {
 
     const handleSubmit = async () => {
         try {
-            let response = await axios.post(`${API_URL}/verifyOTP`, { phone, code });
-            await axios.post(`${API_URL}/verifyOTP`, { phone, code });
-
+            let { data } = await axios.post(`${API_URL}/verifyOTP`, { phone, code });
+            firebase.auth().signInWithCustomToken(data.token);
         } catch (err) {
             console.log(err)
         }

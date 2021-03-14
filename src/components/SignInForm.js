@@ -2,17 +2,22 @@ import React, { useState } from 'react';
 import { StyleSheet, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Input, Button } from 'react-native-elements';
+
+// Dependencies
 import axios from 'axios';
+import firebase from 'firebase';
 
 const API_URL = 'https://us-central1-authflow-d763c.cloudfunctions.net';
 
-const SignUpForm = () => {
-    const [ phone, setPhone ] = useState();
+const SignInForm = () => {
+    const [ phone, setPhone ] = useState("");
+    const [ code, setCode ] = useState("");
 
     const handleSubmit = async () => {
         try {
-            await axios.post(`${API_URL}/createUser`, { phone })
-            await axios.post(`${API_URL}/requestOTP`, { phone })
+            let response = await axios.post(`${API_URL}/verifyOTP`, { phone, code });
+            await axios.post(`${API_URL}/verifyOTP`, { phone, code });
+
         } catch (err) {
             console.log(err)
         }
@@ -26,6 +31,11 @@ const SignUpForm = () => {
                     onChangeText={setPhone}
                     value={phone}
                 />
+                <Input 
+                    label="Enter code"
+                    onChangeText={setCode}
+                    value={code}
+                />
             </View>
             <Button 
                 title="Submit"
@@ -36,4 +46,4 @@ const SignUpForm = () => {
 
 const styles = StyleSheet.create({});
 
-export default SignUpForm;
+export default SignInForm;
